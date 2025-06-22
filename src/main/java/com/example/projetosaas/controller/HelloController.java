@@ -13,6 +13,11 @@ public class HelloController {
         return "Hello, Spring Boot!";
     }
 
+    @GetMapping("/helloworld-get")
+    public MessageResponse hellogetworld() {
+        return new MessageResponse("Hello World");
+    }
+
     @PostMapping("/helloworld")
     public MessageResponse helloworld() {
         return new MessageResponse("Hello World");
