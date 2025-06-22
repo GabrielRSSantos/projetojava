@@ -1,14 +1,12 @@
-# Usa Java 17
-FROM eclipse-temurin:17-jdk-alpine
-
-# Define o diretório de trabalho
+# Etapa 1: Build do projeto usando Maven
+FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copia o JAR para dentro do container
-COPY target/*.jar app.jar
-
-# Expõe a porta padrão do Spring Boot
+# Etapa 2: Executa o JAR com Java leve
+FROM eclipse-temurin:17-jdk-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Comando de inicialização
 ENTRYPOINT ["java", "-jar", "app.jar"]
